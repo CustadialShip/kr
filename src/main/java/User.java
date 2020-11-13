@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class User {
     private final String name;
     private final String login;
@@ -14,6 +16,23 @@ public class User {
         this.mail = info[2];
         this.password = info[3];
         this.role = info[4];
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return name.equals(user.name) &&
+                login.equals(user.login) &&
+                mail.equals(user.mail) &&
+                password.equals(user.password) &&
+                role.equals(user.role);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, login, mail, password, role);
     }
 
     @Override

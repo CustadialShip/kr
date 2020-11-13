@@ -2,13 +2,14 @@ import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         String line;
         String cvsSplitBy = ";";
-        ArrayList<User> userList = new ArrayList<>();
+        List<User> userList = new ArrayList<>();
         String csvInFileNameUser = "users.txt";
         try (BufferedReader br = new BufferedReader(new FileReader(csvInFileNameUser))) {
             while ((line = br.readLine()) != null) {
@@ -22,11 +23,10 @@ public class Main {
             System.out.println(ex);
         } catch (IOException ex) {
             System.out.println(ex);
-            ;
         }
 
         String csvInFileNameHostels = "hostels.txt";
-        ArrayList<Hostel> hostelsList = new ArrayList<>();
+        List<Hostel> hostelsList = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(csvInFileNameHostels))) {
             while ((line = br.readLine()) != null) {
                 String[] hostels = line.split(cvsSplitBy);
@@ -39,17 +39,16 @@ public class Main {
             System.out.println(ex);
         } catch (IOException ex) {
             System.out.println(ex);
-            ;
         }
 
         Terminal terminal = new Terminal(userList, hostelsList);
         try (Scanner sc = new Scanner(System.in)) {
-            while (terminal.isRun) {
+            while (terminal.isRun()) {
                 System.out.println("1 - registration");
                 System.out.println("2 - log in");
                 System.out.println("3 - exit");
                 switch (sc.nextInt()) {
-                    case 1: {
+                    case 1 -> {
                         System.out.println("Insert name");
                         String nameTemp = sc.next().toLowerCase();
                         System.out.println("Insert login");
@@ -67,23 +66,16 @@ public class Main {
                         } catch (IOException ex) {
                             System.out.println(ex);
                         }
-                        break;
                     }
-                    case 2: {
+                    case 2 -> {
                         System.out.println("Insert login");
                         String loginTempLg = sc.next();
                         System.out.println("Insert password");
                         String passwordTempLg = sc.next();
                         terminal.logIn(loginTempLg, passwordTempLg);
-                        break;
                     }
-                    case 3: {
-                        terminal.exit();
-                        break;
-                    }
-                    default: {
-                        throw new IllegalArgumentException();
-                    }
+                    case 3 -> terminal.exit();
+                    default -> throw new IllegalArgumentException();
                 }
                 if (terminal.isUser()) {
                     boolean back = false;
@@ -94,11 +86,8 @@ public class Main {
                         System.out.println("4 - back");
                         System.out.println("5 - exit");
                         switch (sc.nextInt()) {
-                            case 1: {
-                                terminal.showInfo();
-                                break;
-                            }
-                            case 2: {
+                            case 1 -> terminal.showInfo();
+                            case 2 -> {
                                 System.out.println("Number of hotels?");
                                 int n = sc.nextInt();
                                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -110,25 +99,15 @@ public class Main {
                                 for (Hostel i : terminal.searchTop(n, sDateInf, sDateSup)) {
                                     System.out.println(i);
                                 }
-                                break;
                             }
-                            case 3:{
+                            case 3 -> {
                                 System.out.println("Insert group");
                                 String groupTemp = sc.next();
                                 System.out.println(terminal.averageRating(groupTemp));
-                                break;
                             }
-                            case 4: {
-                                back = true;
-                                break;
-                            }
-                            case 5: {
-                                terminal.exit();
-                                break;
-                            }
-                            default: {
-                                throw new IllegalArgumentException();
-                            }
+                            case 4 -> back = true;
+                            case 5 -> terminal.exit();
+                            default -> throw new IllegalArgumentException();
                         }
                     }
                 } else if (terminal.isAdmin()) {

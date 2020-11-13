@@ -1,15 +1,15 @@
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 public class Terminal {
-    ArrayList<User> userListTerminal;
-    ArrayList<Hostel> hostelsListTerminal;
+    List<User> userListTerminal;
+    List<Hostel> hostelsListTerminal;
     private boolean isUser;
     private boolean isAdmin;
     boolean isRun;
 
-    Terminal(ArrayList<User> userList, ArrayList<Hostel> hostelsList){
+    Terminal(List<User> userList, List<Hostel> hostelsList){
         isUser = false;
         isAdmin = false;
         this.userListTerminal = userList;
@@ -29,7 +29,7 @@ public class Terminal {
         return isRun;
     }
 
-    ArrayList<User> update(){
+    List<User> update(){
         return userListTerminal;
     }
 
@@ -76,6 +76,7 @@ public class Terminal {
             }
         }
     }
+
     void showInfo(){
         for (Hostel i : hostelsListTerminal){
             System.out.println(i);
@@ -94,7 +95,7 @@ public class Terminal {
     }
 
     double averageRating(String groupTemp){
-        ArrayList<Hostel> soloGroup= new ArrayList<>();
+        List<Hostel> soloGroup= new ArrayList<>();
         for(Hostel i : hostelsListTerminal){
             if(i.getGroup().equals(groupTemp)){
                 soloGroup.add(i);
@@ -107,8 +108,8 @@ public class Terminal {
         return sum / soloGroup.size();
     }
 
-    ArrayList<Hostel> searchTop(int n, LocalDate infDate, LocalDate supDate){
-            ArrayList<Hostel> answer = new ArrayList<>();
+    List<Hostel> searchTop(int n, LocalDate infDate, LocalDate supDate){
+            List<Hostel> answer = new ArrayList<>();
             for (Hostel i: hostelsListTerminal){
                 if(infDate.isBefore(i.getDateFoundation()) &&
                         supDate.isAfter(i.getDateFoundation())){
@@ -123,6 +124,4 @@ public class Terminal {
         isUser = false;
         isRun = false;
     }
-
-
 }

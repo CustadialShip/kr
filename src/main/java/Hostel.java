@@ -1,13 +1,16 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class Hostel implements Comparable<Hostel> {
+
     private final String id;
     private final String group;
     private final String name;
     private final LocalDate dateFoundation;
     private final int numOfRoom;
     private final int stars;
+
     Hostel(String[] info) throws IllegalArgumentException {
         if (info.length != 6) {
             throw new IllegalArgumentException("Error: wrong data");
@@ -28,6 +31,24 @@ public class Hostel implements Comparable<Hostel> {
                 ", name='" + name + '\'' +
                 ", stars=" + stars +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Hostel hostel = (Hostel) o;
+        return numOfRoom == hostel.numOfRoom &&
+                stars == hostel.stars &&
+                id.equals(hostel.id) &&
+                group.equals(hostel.group) &&
+                name.equals(hostel.name) &&
+                dateFoundation.equals(hostel.dateFoundation);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, group, name, dateFoundation, numOfRoom, stars);
     }
 
     public int compareTo(Hostel compareHostel){
