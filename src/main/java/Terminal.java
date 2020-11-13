@@ -1,15 +1,16 @@
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Terminal {
     List<User> userListTerminal;
-    List<Hostel> hostelsListTerminal;
+    Map<String, Hostel> hostelsListTerminal;
     private boolean isUser;
     private boolean isAdmin;
     boolean isRun;
 
-    Terminal(List<User> userList, List<Hostel> hostelsList){
+    Terminal(List<User> userList, Map<String, Hostel> hostelsList) {
         isUser = false;
         isAdmin = false;
         this.userListTerminal = userList;
@@ -29,20 +30,20 @@ public class Terminal {
         return isRun;
     }
 
-    List<User> update(){
+    List<User> update() {
         return userListTerminal;
     }
 
     void registration(String name, String login, String mail,
-                      String password){
+                      String password) {
         boolean isExist = false;
-        for(User i : userListTerminal){
-            if(login.equals(i.getLogin())){
+        for (User i : userListTerminal) {
+            if (login.equals(i.getLogin())) {
                 System.out.println("Such user already exists");
                 isExist = true;
             }
         }
-        if(!isExist) {
+        if (!isExist) {
             String[] user = new String[5];
             user[0] = name;
             user[1] = login;
@@ -53,21 +54,21 @@ public class Terminal {
         }
     }
 
-    void logIn(String login, String password){
+    void logIn(String login, String password) {
         boolean isCorrectLogin = false;
         boolean isCorrectPassword = false;
-        for(User i : userListTerminal){
-            if(i.getLogin().equals(login)){
+        for (User i : userListTerminal) {
+            if (i.getLogin().equals(login)) {
                 isCorrectLogin = true;
             }
-            if(i.getPassword().equals(password)){
+            if (i.getPassword().equals(password)) {
                 isCorrectPassword = true;
             }
-            if(isCorrectLogin && isCorrectPassword && i.getRole().equals("admin")){
+            if (isCorrectLogin && isCorrectPassword && i.getRole() == User.Role.ADMIN) {
                 isAdmin = true;
                 isUser = false;
             }
-            if(isCorrectLogin && isCorrectPassword && i.getRole().equals("user")){
+            if (isCorrectLogin && isCorrectPassword && i.getRole() == User.Role.USER) {
                 isUser = true;
                 isAdmin = false;
             } else {
@@ -77,49 +78,43 @@ public class Terminal {
         }
     }
 
-    void showInfo(){
-        for (Hostel i : hostelsListTerminal){
+    void showInfo() {
+        for (Hostel i : hostelsListTerminal.values()) {
             System.out.println(i);
         }
     }
 
-    String searchGroup(String id){
-        if(isAdmin){
-            for(Hostel i : hostelsListTerminal){
-                if(i.getId().equals(id)){
-                    return i.getGroup();
-                }
-            }
+    String searchGroup(String id) {
+        if (isAdmin) {
+            return hostelsListTerminal.get(id).getGroup();
         }
-        return "null";
+        return "";
     }
 
-    double averageRating(String groupTemp){
-        List<Hostel> soloGroup= new ArrayList<>();
-        for(Hostel i : hostelsListTerminal){
-            if(i.getGroup().equals(groupTemp)){
-                soloGroup.add(i);
-            }
-        }
+    double averageRating(String groupTemp) {
+        List<Hostel> soloGroup = new ArrayList<>();
         double sum = 0;
-        for(Hostel i : soloGroup){
-            sum += i.getStars();
+        for (Hostel i : hostelsListTerminal.values()) {
+            if (i.getGroup().equals(groupTemp)) {
+                soloGroup.add(i);
+                sum += i.getStars();
+            }
         }
         return sum / soloGroup.size();
     }
 
-    List<Hostel> searchTop(int n, LocalDate infDate, LocalDate supDate){
-            List<Hostel> answer = new ArrayList<>();
-            for (Hostel i: hostelsListTerminal){
-                if(infDate.isBefore(i.getDateFoundation()) &&
-                        supDate.isAfter(i.getDateFoundation())){
-                    answer.add(i);
-                }
+    List<Hostel> searchTop(int n, LocalDate infDate, LocalDate supDate) {
+        List<Hostel> answer = new ArrayList<>();
+        for (Hostel i : hostelsListTerminal.values()) {
+            if (infDate.isBefore(i.getDateFoundation()) &&
+                    supDate.isAfter(i.getDateFoundation())) {
+                answer.add(i);
             }
+        }
         return answer;
     }
 
-    void exit(){
+    void exit() {
         isAdmin = false;
         isUser = false;
         isRun = false;

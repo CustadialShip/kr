@@ -1,9 +1,7 @@
 import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -26,14 +24,14 @@ public class Main {
         }
 
         String csvInFileNameHostels = "hostels.txt";
-        List<Hostel> hostelsList = new ArrayList<>();
+        Map<String, Hostel> hostelsList = new HashMap<>();
         try (BufferedReader br = new BufferedReader(new FileReader(csvInFileNameHostels))) {
             while ((line = br.readLine()) != null) {
                 String[] hostels = line.split(cvsSplitBy);
                 for (int j = 0; j < hostels.length; j++) {
                     hostels[j] = hostels[j].toLowerCase();
                 }
-                hostelsList.add(new Hostel(hostels));
+                hostelsList.put(hostels[0], new Hostel(hostels));
             }
         } catch (FileNotFoundException ex) {
             System.out.println(ex);
@@ -138,13 +136,13 @@ public class Main {
                                 }
                                 break;
                             }
-                            case 3:{
+                            case 3: {
                                 System.out.println("Insert group");
                                 String groupTemp = sc.next();
                                 System.out.println(terminal.averageRating(groupTemp));
                                 break;
                             }
-                            case 4:{
+                            case 4: {
                                 String id = sc.next();
                                 System.out.println(terminal.searchGroup(id));
                             }

@@ -5,7 +5,31 @@ public class User {
     private final String login;
     private final String mail;
     private final String password;
-    private final String role;
+
+    //private final String role;
+    public enum Role {
+        ADMIN("ADMIN"),
+        USER("USER"),
+        ERROR("ERROR");
+        String value;
+
+        Role(String value) {
+            this.value = value.toUpperCase();
+        }
+
+        static Role fromString(String info) {
+            info = info.toUpperCase();
+            if (info.equals("ADMIN")) {
+                return ADMIN;
+            } else if (info.equals("USER")) {
+                return USER;
+            } else {
+                return ERROR;
+            }
+        }
+    }
+
+    private final Role role;
 
     User(String[] info) throws IllegalArgumentException {
         if (info.length != 5) {
@@ -15,7 +39,7 @@ public class User {
         this.login = info[1];
         this.mail = info[2];
         this.password = info[3];
-        this.role = info[4];
+        this.role = Role.fromString(info[4]);
     }
 
     @Override
@@ -59,7 +83,7 @@ public class User {
         return password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 }
